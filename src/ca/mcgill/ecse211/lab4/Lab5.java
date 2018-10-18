@@ -10,7 +10,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
-public class Lab4 {
+public class Lab5 {
 
 	private static final EV3LargeRegulatedMotor leftMotor =
 			new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
@@ -19,7 +19,9 @@ public class Lab4 {
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 	private static final Port usPort = LocalEV3.get().getPort("S1");
 	public static final double WHEEL_RAD = 2.2;
-	public static final double TRACK = 17.95;
+	public static final double TRACK = 17.98;
+	private static int llx, lly, urx, ury, tr,sc;
+	
 
 	public static void main(String[] args) throws OdometerExceptions {
 
@@ -42,9 +44,11 @@ public class Lab4 {
 
 		//Start threads
 		if (buttonChoice == Button.ID_ENTER) {
+			lcd.clear();
 			Thread odometerThread = new Thread(odometer);
 			odometerThread.start();
-			display.run();
+			Thread odoDisplayThread = new Thread(display);
+			odoDisplayThread.start();
 			Thread UltrasonicThread = new Thread(ultrasonicP);
 			UltrasonicThread.start();
 
@@ -59,16 +63,18 @@ public class Lab4 {
 				if (UltrasonicLocalizer.status = true) {		
 					(new Thread() {	   
 						public void run() {
-							LightLocalizer.run(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
+							sc = 0;
+							LightLocalizer.run(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer,sc);
 						}
 					}).start();
 					break;
 				}
 			}
 		}
+		/*
 		lcd.clear();
 		lcd.drawString("This Lab is finished", 0, 0);
-			
+		*/	
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);
 	}

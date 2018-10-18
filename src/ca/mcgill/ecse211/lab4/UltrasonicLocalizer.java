@@ -20,7 +20,8 @@ public class UltrasonicLocalizer {
 	private static double firstAngle; 
 	private static double lastAngle; 
 	private static double deltaT;
-	public static boolean status = false; 
+	public static boolean status = false;
+
 
 	public static void run(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right,
 			double radius, double track, Odometer odom) {

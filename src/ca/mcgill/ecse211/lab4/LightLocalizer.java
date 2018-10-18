@@ -20,13 +20,15 @@ public class LightLocalizer {
 	private static final int ROTATE_SPEED = 120;
 	private static float color = 0;
 	private static final double dis = 12.5; 
+	private static int sc;
 	
 	public static void run(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right,
-			double radius, double track, Odometer odom) {
+			double radius, double track, Odometer odom, int SC) {
 		leftMotor = left;
 		rightMotor = right;
 		WRadius = radius;
 		TRACK = track;
+		sc = SC;
 		
 		@SuppressWarnings("resource")
 		SampleProvider myColorSample = myColor.getMode("Red");
@@ -84,6 +86,19 @@ public class LightLocalizer {
 		rightMotor.setSpeed(ROTATE_SPEED);
 		leftMotor.rotate(convertAngle(WRadius, TRACK, -45), true);
 		rightMotor.rotate(-convertAngle(WRadius, TRACK, -45), false);
+		switch (sc) {
+		case 0: 
+			odometer.setXYT(1, 1, 0);
+			break;
+		case 1:
+			odometer.setXYT(7, 1, 270);
+			break;
+		case 2:
+			odometer.setXYT(7, 7, 180);
+			break;
+		case 3:
+			odometer.setXYT(1, 7, 90);
+		}
 	}
 	
 	
