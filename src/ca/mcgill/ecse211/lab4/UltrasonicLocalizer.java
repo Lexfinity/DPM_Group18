@@ -4,6 +4,12 @@ import ca.mcgill.ecse211.odometer.Odometer;
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+
+/**
+ * This class is meant as a skeleton for the ultrasonic sensor localization class to be used.
+ * 
+ * @author Zikun Lyu
+ */
 public class UltrasonicLocalizer {
 
 	private static int distance; // distance reading from the ultrasonic sensor
@@ -15,12 +21,11 @@ public class UltrasonicLocalizer {
 	private static double rightRadius;
 	private static final int d = 35; 
 	private static final int k = 1;  
-	private static final int FORWARD_SPEED = 200;
 	private static final int ROTATE_SPEED = 85;
 	private static double firstAngle; 
 	private static double lastAngle; 
 	private static double deltaT;
-	public static boolean status = false;
+	public static boolean ultrasonicLocalizerFinish = false;
 
 
 	public static void run(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right,
@@ -45,7 +50,7 @@ public class UltrasonicLocalizer {
 	    
 		distance = UltrasonicPoller.getDistance();
 
-		if (distance > 30.48) {
+		if (distance > Lab5.TILE_SIZE) {
 			fallingEdge();
 		}
 		else {
@@ -67,7 +72,7 @@ public class UltrasonicLocalizer {
 		leftMotor.rotate(convertAngle(leftRadius, TRACK, diffTheta), true);
 		rightMotor.rotate(-convertAngle(rightRadius, TRACK, diffTheta), false);
 		odometer.setTheta(0); 
-		status = true; 
+		ultrasonicLocalizerFinish = true; 
 	}
 	
 	/**

@@ -6,6 +6,12 @@ import ca.mcgill.ecse211.odometer.Odometer;
 import ca.mcgill.ecse211.odometer.OdometerExceptions;
 import lejos.hardware.lcd.TextLCD;
 
+
+/**
+ * This class is meant as a skeleton for the display class to be used.
+ * 
+ * @author Zikun Lyu
+ */
 public class Display implements Runnable {
   private TextLCD lcd;
   private double[] position;

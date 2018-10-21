@@ -9,36 +9,39 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+
+/**
+ * This class is meant as a skeleton for the light sensor localization class to be used.
+ * 
+ * @author Zikun Lyu
+ */
 public class LightLocalizer {
 	private static final Port portColor = LocalEV3.get().getPort("S4"); 
 	private static SensorModes myColor = new EV3ColorSensor(portColor);
-	private static Odometer odometer;
+	private Odometer odometer;
 	private static EV3LargeRegulatedMotor leftMotor;
 	private static EV3LargeRegulatedMotor rightMotor;
 	private static double TRACK;
 	private static double WRadius;
-	private static final int ROTATE_SPEED = 120;
+	private static final int ROTATE_SPEED = 140;
 	private static float color = 0;
-	private static final double dis = 12.5; 
-	private static int sc;
+	private static final double dis = 16; 
+	public static boolean lightLocalizerFinish = false;
 	
 	public static void run(EV3LargeRegulatedMotor left, EV3LargeRegulatedMotor right,
-			double radius, double track, Odometer odom, int SC) {
+			double radius, double track, Odometer odom) {
 		leftMotor = left;
 		rightMotor = right;
 		WRadius = radius;
 		TRACK = track;
-		sc = SC;
-		
-		@SuppressWarnings("resource")
-		SampleProvider myColorSample = myColor.getMode("Red");
-		float[] sampleColor = new float[myColor.sampleSize()];
+		//sc = SC;
+		//odometer = odom;
 		
 		//Stop the motors
 		left.stop();
 		right.stop();
-		left.setAcceleration(5000);
-		right.setAcceleration(5000);
+		left.setAcceleration(4000);
+		right.setAcceleration(4000);
 
 		try {
 			Thread.sleep(1000);
@@ -58,6 +61,26 @@ public class LightLocalizer {
 		rightMotor.forward();
 
 		//Use the light sensor to detect lines
+		lightSensorCorrection();
+		
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+		}
+		
+		//Rotate to face the true north
+				leftMotor.setSpeed(ROTATE_SPEED);
+				rightMotor.setSpeed(ROTATE_SPEED);
+				leftMotor.rotate(convertAngle(WRadius, TRACK, -45), true);
+				rightMotor.rotate(-convertAngle(WRadius, TRACK, -45), false);
+		
+		lightLocalizerFinish = true;
+	}
+	
+	public static void lightSensorCorrection() {
+		@SuppressWarnings("resource")
+		SampleProvider myColorSample = myColor.getMode("Red");
+		float[] sampleColor = new float[myColor.sampleSize()];
 		while (true) {
 			myColorSample.fetchSample(sampleColor, 0); 
 			color = sampleColor[0] * 1000; 
@@ -74,33 +97,9 @@ public class LightLocalizer {
 				rightMotor.setSpeed(0);
 				
 				break;
-			}
-
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-			}
-		}
-		//Rotate to face the true north
-		leftMotor.setSpeed(ROTATE_SPEED);
-		rightMotor.setSpeed(ROTATE_SPEED);
-		leftMotor.rotate(convertAngle(WRadius, TRACK, -45), true);
-		rightMotor.rotate(-convertAngle(WRadius, TRACK, -45), false);
-		switch (sc) {
-		case 0: 
-			odometer.setXYT(1, 1, 0);
-			break;
-		case 1:
-			odometer.setXYT(7, 1, 270);
-			break;
-		case 2:
-			odometer.setXYT(7, 7, 180);
-			break;
-		case 3:
-			odometer.setXYT(1, 7, 90);
+			}	
 		}
 	}
-	
 	
 	private static int convertDistance(double radius, double distance) {
 		return (int) ((180.0 * distance) / (Math.PI * radius));

@@ -7,6 +7,8 @@ public class UltrasonicPoller extends Thread {
 	private SampleProvider us;
 	private float[] usData;
 	private static int distance;
+	public MoveFollowingLine move;
+	
 
 	public UltrasonicPoller(SampleProvider us, float[] usData) {
 		this.us = us;
@@ -24,6 +26,13 @@ public class UltrasonicPoller extends Thread {
 			us.fetchSample(usData, 0);
 			distance = (int) (usData[0] * 100.0); 
 			if (distance > 255) distance = 255; 
+			if (Lab5.navigationFinish) {
+				//MoveFollowingLine.distance = distance;
+				ColorDetector.distanceC = distance;
+				 if (distance <= 3 && !Navigation.isAvoiding && !MoveFollowingLine.isTurning) {
+		        	  move.avoid();
+		          }
+			}
 			try {
 				Thread.sleep(10);
 			} catch (Exception e) {
