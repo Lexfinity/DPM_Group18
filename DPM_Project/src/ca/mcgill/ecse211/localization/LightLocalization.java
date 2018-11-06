@@ -27,8 +27,12 @@ public class LightLocalization {
 }
 	
 	
-	
-	public void lightLocalize(){
+	/**
+	 * 
+	 * lightLocalizer uses the light sensor to get to the closest intersection point from the starting
+	 * corner, using the lines detected and the distances measured from each line detection.
+	 */
+	public void lightLocalizer(){
 		
 	}
 	

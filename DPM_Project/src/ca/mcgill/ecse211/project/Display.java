@@ -23,8 +23,6 @@ public class Display implements Runnable {
 	/**
 	   * This is the class constructor
 	   * 
-	   * 
-	   * 
 	   * @param odoData
 	   * @throws OdometerExceptions 
 	   */

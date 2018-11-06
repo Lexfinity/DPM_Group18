@@ -25,12 +25,16 @@ public class UltrasonicLocalization {
 	}
 	
 	/**
-	 * takes an input angle value for Theta, and uses it to perform an angel correction in order to 
-	 * turn at minimal angle
 	 * 
-	 * @param theta
+	 * The usLocalizer method uses the ultrasonic sensor to get the distance value from the
+	 * usSensor. It continuously takes in the distance until it reaches the rising_limit or the
+	 * falling_limit * which are the maximum and minimum distances the usSensor can have between
+	 * the wall when this distance is reached the robot stops and begins to rotate in the opposite
+	 * direction until it hits the rising_limit or falling_limit  for the second time. fallingEdge or
+	 * risingEdge routine will be determined based on the initial starting position of the robot.
+	 * 
 	 */
-	public void turnTo(double theta) {
+	public void usLocalizer() {
 		
 	}
 	

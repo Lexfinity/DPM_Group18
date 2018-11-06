@@ -44,10 +44,7 @@ public class Navigation {
 
 	
 	/**
-	 * Takes in the angle, the distance of the track and the wheel radius 
-	 * and converts the angle into a distance value based on the track, then
-	 * passes these values within the convert distance method.
-	 *	 
+	 * 	 
 	 *convert the angle you enter to an angle the wheel needs to rotate
 	 *
 	 * @param angle
