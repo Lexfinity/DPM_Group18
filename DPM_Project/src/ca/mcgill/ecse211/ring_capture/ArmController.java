@@ -1,5 +1,6 @@
 package ca.mcgill.ecse211.ring_capture;
 
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 
 /**
@@ -9,6 +10,11 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
  */
 
 public class ArmController {
+	private static EV3MediumRegulatedMotor armMotor;
+	private static final int UNLOAD_SPEED = 400;
+	static EV3LargeRegulatedMotor leftMotor;
+	static EV3LargeRegulatedMotor rightMotor;
+
 	
 	
 	/**
@@ -16,7 +22,9 @@ public class ArmController {
 	 * 
 	 * @param armMotor
 	 */
-	public ArmController(EV3MediumRegulatedMotor armMotor) {
+	public ArmController(EV3MediumRegulatedMotor arm) {
+		this.armMotor = arm;
+		
 		
 	}
 	
@@ -26,6 +34,7 @@ public class ArmController {
 	 * 
 	 */
 	public static void grab() {
+		armMotor.rotate(75);
 		
 	}
 	
@@ -35,6 +44,7 @@ public class ArmController {
 	 * 
 	 */
 	public static void unload() {
+		armMotor.rotate(-80);
 		
 	}
 
