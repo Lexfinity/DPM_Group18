@@ -3,7 +3,6 @@ package ca.mcgill.ecse211.project;
 import ca.mcgill.ecse211.ring_capture.ArmController;
 import ca.mcgill.ecse211.ring_capture.ColorDetection;
 import ca.mcgill.ecse211.project.Display;
-import ca.mcgill.ecse211.ring_capture.ColorDetection;
 import ca.mcgill.ecse211.localization.LightLocalization;
 import ca.mcgill.ecse211.localization.UltrasonicLocalization;
 import ca.mcgill.ecse211.project.SensorPoller;
@@ -15,8 +14,6 @@ import lejos.hardware.lcd.TextLCD;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.Port;
-import lejos.hardware.port.SensorPort;
-import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
@@ -29,11 +26,8 @@ public class GameController {
 			new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final EV3MediumRegulatedMotor armMotor =
 			new EV3MediumRegulatedMotor(LocalEV3.get().getPort("B"));
-	private static final EV3LargeRegulatedMotor sensorMotor =
-			new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final TextLCD lcd = LocalEV3.get().getTextLCD();
 	private static final Port usPort = LocalEV3.get().getPort("S1");
-	public static final EV3ColorSensor colorSensor = new EV3ColorSensor(SensorPort.S4);
 	public static final double WHEEL_RAD = 2.2;
 	public static final double TRACK = 15.5;
 	private static int llx, lly, urx, ury; // range from 0 to 8
@@ -52,7 +46,6 @@ public class GameController {
 	public static void main(String[] args) throws OdometerExceptions {
 		// TODO Auto-generated method stub
 		
-		
 		int buttonChoice;
 		@SuppressWarnings("resource") 
 		SensorModes usSensor = new EV3UltrasonicSensor(usPort); 
@@ -67,8 +60,6 @@ public class GameController {
 		UltrasonicLocalization url = new UltrasonicLocalization();
 		//LightLocalization ll = new LightLocalization();
 		ArmController ac = new ArmController(armMotor);
-		TextLCD t = LocalEV3.get().getTextLCD();
-		ColorDetection cd = new ColorDetection(colorSensor, usSensor, usData, t, leftMotor, rightMotor, sensorMotor);		
 
 		do {
 			lcd.clear();
@@ -91,24 +82,10 @@ public class GameController {
 			Thread UltrasonicThread = new Thread(usPoller);
 			UltrasonicThread.start();
 			
-			leftMotor.forward();
-			rightMotor.forward();
-			leftMotor.setSpeed(150);
-			rightMotor.setSpeed(150);
-			cd.run();
-			ArmController.grab();
-			
-//			leftMotor.backward();
-//			rightMotor.backward();
-//			leftMotor.setSpeed(150);
-//			rightMotor.setSpeed(150);
-//			ArmController.unload();
-		    
-		    
-			
+			ac.grab();
 			//url.run(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
-			//while (Button.waitForAnyPress() != Button.ID_ENTER); 
-			//ac.unload();
+			while (Button.waitForAnyPress() != Button.ID_LEFT); 
+			ac.unload();
 			
 			//ll.run(leftMotor, rightMotor, WHEEL_RAD, TRACK, odometer);
 		}

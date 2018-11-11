@@ -1,6 +1,5 @@
 package ca.mcgill.ecse211.ring_capture;
 
-import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 
@@ -12,7 +11,10 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
 
 public class ArmController {
 	private static EV3MediumRegulatedMotor armMotor;
-	
+	private static final int UNLOAD_SPEED = 400;
+	static EV3LargeRegulatedMotor leftMotor;
+	static EV3LargeRegulatedMotor rightMotor;
+
 	
 	
 	/**
@@ -43,11 +45,6 @@ public class ArmController {
 	 */
 	public static void unload() {
 		armMotor.rotate(-80);
-		Sound.beep();
-		Sound.beep();
-		Sound.beep();
-		Sound.beep();
-		Sound.beep();
 		
 	}
 
